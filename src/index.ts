@@ -1,30 +1,15 @@
-import express from "express";
-import { connectToDatabase } from './models/dbConnection.js';
-import { router } from './routes/subscribers.js';
+import express from 'express';
+import dotenv from 'dotenv';
 
-const port = process.env.PORT || 5050;
-const app = express();
+// load environment variables
+dotenv.config();
 
-app.use('/', router);
+// get ATLAS_URI using destructuring
+const { ATLAS_URI } = process.env;
 
-
-// problem function. app.listen() is never executed because when the
-// if statement is evaluated, it is alway undefined and the error below it
-// get thrown
-const startServer = async() => {
-  try {
-    const database = await connectToDatabase();
-    if(database) { // Type guard to ensure const database is not undefined, thus succesful connection
-      console.log("Database connection was successful")
-      app.listen(port, () => {
-        console.log(`SERVER LISTENING ON PORT ${port}`);
-      })
-    }
-    throw new Error("Database connection failed: Server not started");
-  } catch(error: any) {
-    console.error(error.message)
-    console.error(error)
-  }
+// terminate Node.js application if ATLAS_URI is not available
+if(!ATLAS_URI) {
+  console.log("No ATLAS_URI environment variable has been defined in config.env");
+  process.exit(1);
 }
 
-startServer()
