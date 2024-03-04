@@ -1,5 +1,6 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
+import { connectToDatabase } from './database.js';
 
 //Load environment variables from the .env file
 dotenv.config();
@@ -13,3 +14,12 @@ if (!ATLAS_URI) {
   process.exit(1); // exit with uncaught fatal exception(1)
 }
 
+connectToDatabase(ATLAS_URI)
+  .then(() => {
+    const app = express();
+
+    app.listen(3000, () => {
+      console.log('APP LISTENING ON PORT 3000!!')
+    })
+  })
+  .catch(error => console.log(error));
