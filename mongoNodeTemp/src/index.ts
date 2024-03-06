@@ -17,7 +17,7 @@ if (!ATLAS_URI) {
 connectToDatabase(ATLAS_URI)
   .then(() => {
     const app = express();
-
+    
     app.listen(3000, () => {
       console.log('APP LISTENING ON PORT 3000!!')
     })

@@ -2,8 +2,8 @@ import * as mongodb from 'mongodb';
 import { Employee } from './employee.js'
 
 // An object to hold the collections that will be created
-export const collection: {
-  employee?: mongodb.Collection<Employee>
+export const collections: {
+  employees?: mongodb.Collection<Employee>
 } = {};
 
 export async function connectToDatabase(uri: string) {
